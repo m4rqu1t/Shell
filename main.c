@@ -41,7 +41,23 @@ int main(){
         }
         args[j] = NULL;
 
+        if (args[0] == NULL) {
+            continue;
+        }
 
+        int pid = fork();
+
+        if(pid<0){
+            printf("ERRO NO FORK\n");
+        }else if(pid == 0){
+            if(execvp(args[0], args) == -1){
+                printf("NAO EXISTE O COMANDO %s\n",args[0]);
+                exit(1);
+            }
+        }else{
+            int status;
+            waitpid(pid, &status, 0);
+        }
 
     }
     return 0;
