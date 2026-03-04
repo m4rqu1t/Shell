@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <string.h>
@@ -73,6 +74,26 @@ void executar(char *args[], int background) {
         }
         return;
     }
+
+    if(strcmp(args[0], "fg") == 0){
+        if(args[1] == NULL){
+
+            printf("USO INCORRETOD O COMANDO fg, O CORRETOR SERIA: fg <numero_do_pid>\n");
+
+        }else{
+                pid_t pid_alvo = atoi(args[1]);
+                printf("PEGANDO O PROCESSO %d PARA O FG\n", pid_alvo);
+                int status;
+                waitpid(pid_alvo, &status, 0);
+        }
+        return;
+    }
+
+
+
+
+
+
 
     pid_t pid = fork();
 
