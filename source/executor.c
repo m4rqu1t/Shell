@@ -17,11 +17,12 @@ void executar(char *args[], int background) {
         return;
     }
 
-    int pid = fork();
+    pid_t pid = fork();
 
     if(pid < 0){
 
         printf("ERRO NO FORK\n");
+        exit(0);
     }else if(pid == 0){
 
         if(execvp(args[0], args) == -1){
