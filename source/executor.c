@@ -6,29 +6,35 @@
 #include <string.h>
 #include "executor.h"
 
-void executar(char *args[], int background) {
+int executar(char *args[], int background, int style) {
 
     int i = 0;
     int temPipe = 0;
     int posPipe = 0;
 
     while(args[i] != NULL){
+
         if(strcmp(args[i], "|") == 0){
+
             temPipe = 1;
             posPipe = i;
             break;
+
         }
         i++;
     }
 
     if(temPipe == 1){
+
         args[posPipe] = NULL;
         char **args2 = &args[posPipe +1];
-
         int fd[2];
+
         if(pipe(fd) == -1){
+
             printf("ERRO NO PIPE\n");
-            return;
+            return -1;
+
         }
 
         pid_t pid1 = fork();
@@ -61,46 +67,49 @@ void executar(char *args[], int background) {
         waitpid(pid1, NULL, 0);
         waitpid(pid2, NULL, 0);
 
-        return;
+        return -1;
     }
 
     if(strcmp(args[0], "cd") == 0){
+
         if(args[1] == NULL){
+
             printf("USO INCORRETO DO COMANDO cd, O CORRETO SERIA: cd <nome_da_pasta>\n");
+
         }else{
             if(chdir(args[1]) != 0){
+
                 printf("ERRO NO cd\n");
+
             }
         }
-        return;
+        return -1;
     }
 
     if(strcmp(args[0], "fg") == 0){
+
         if(args[1] == NULL){
 
             printf("USO INCORRETOD O COMANDO fg, O CORRETOR SERIA: fg <numero_do_pid>\n");
 
         }else{
-                pid_t pid_alvo = atoi(args[1]);
-                printf("PEGANDO O PROCESSO %d PARA O FG\n", pid_alvo);
-                int status;
-                waitpid(pid_alvo, &status, 0);
+
+            pid_t pid_alvo = atoi(args[1]);
+            printf("PEGANDO O PROCESSO %d PARA O FG\n", pid_alvo);
+            int status;
+            waitpid(pid_alvo, &status, 0);
+
         }
-        return;
+        return -1;
     }
-
-
-
-
-
-
 
     pid_t pid = fork();
 
     if(pid < 0){
 
         printf("ERRO NO FORK\n");
-        exit(0);
+        return -1;
+
     }else if(pid == 0){
 
         if(execvp(args[0], args) == -1){
@@ -111,11 +120,20 @@ void executar(char *args[], int background) {
     }else{
 
         if(background == 1){
+
             printf("PROCESSO NO BACKGROUND: %d\n", pid);
+            return -1;
+
+        }else if(style == 1){
+
+            return pid;
+
         }else{
 
         int status;
         waitpid(pid, &status, 0);
+
         }
     }
+    return -1;
 }
