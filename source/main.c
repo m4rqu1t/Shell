@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 
         if (fgets(input, 1001, entrada) == NULL) {
 
-            printf("\nFECHANDO\n");
+            printf("\nFECHANDO...\n");
             break;
 
         }

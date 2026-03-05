@@ -8,6 +8,11 @@
 
 int executar(char *args[], int background, int style) {
 
+    if(strcmp(args[0], "exit") == 0){
+        printf("\nFECHANDO...\n");
+        exit(0);
+    }
+
     int i = 0;
     int temPipe = 0;
     int posPipe = 0;
