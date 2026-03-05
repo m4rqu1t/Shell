@@ -1,28 +1,49 @@
 #include <stdio.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <stdlib.h>
 #include "parser.h"
 #include "executor.h"
 
-int main() {
+int main(int argc, char **argv) {
     char input[1001];
     char *args[1001];
     int background;
     int style = 0;
 
-    while(1) {
+    FILE *entrada = stdin;
+    int lendo_arq = 0;
 
-        if(style == 0){
+    if(argc > 1){
 
-            printf("Shell BRABO seq >");
+        entrada = fopen(argv[1], "r");
 
-        }else{
+        if(entrada == NULL){
 
-            printf("Shell BRABO par >");
+            printf("ERRO AO ABRIR O ARQUIVO %s\n", argv[1]);
+            return 1;
 
         }
 
-        if (fgets(input, 1001, stdin) == NULL) {
+        lendo_arq = 1;
+
+    }
+
+    while(1) {
+
+        if(lendo_arq == 0){
+            if(style == 0){
+
+                printf("Shell BRABO seq >");
+
+            }else{
+
+            printf("Shell BRABO par >");
+
+            }
+        }
+
+        if (fgets(input, 1001, entrada) == NULL) {
 
             printf("\nFECHANDO\n");
             break;
@@ -85,13 +106,13 @@ int main() {
 
             if (ler_e_cortar(comandos[c], args, &background)) {
 
-                if (args[1] != NULL && strcmp(args[0], "style") == 0) {
+                if (strcmp(args[0], "style") == 0) {
 
-                    if(strcmp(args[1], "parallel") == 0){
+                    if(args[1] != NULL && strcmp(args[1], "parallel") == 0){
 
                         style = 1;
 
-                    }else if(strcmp(args[1], "sequential") == 0){
+                    }else if(args[1] != NULL && strcmp(args[1], "sequential") == 0){
 
                         style = 0;
 
