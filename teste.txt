@@ -1,6 +1,8 @@
-echo "Iniciando lista de comandos"
-style parallel
-sleep 2 ; echo "Lado A" ; sleep 2 ; echo "Lado B"
-style sequential
-ls -l
-echo "Fim da execucao do arquivo!"
+total 36
+-rw-r--r-- 1 m4rq m4rq   328 Mar  4 07:27 Makefile
+drwxr-xr-x 2 m4rq m4rq  4096 Mar  5 10:10 objects
+-rw-r--r-- 1 m4rq m4rq     7 Mar  3 14:29 README.md
+-rwxr-xr-x 1 m4rq m4rq 16864 Mar  5 10:10 shell_brabo
+drwxr-xr-x 2 m4rq m4rq  4096 Mar  4 07:03 source
+-rw-r--r-- 1 m4rq m4rq     0 Mar  5 10:02 teste2.txt
+-rw-r--r-- 1 m4rq m4rq     0 Mar  5 10:12 teste.txt

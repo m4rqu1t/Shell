@@ -1,6 +1,0 @@
-echo "Iniciando lista de comandos"
-style parallel
-sleep 2 ; echo "Lado A" ; sleep 2 ; echo "Lado B"
-style sequential
-ls -l
-echo "Fim da execucao do arquivo!"

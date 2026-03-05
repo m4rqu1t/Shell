@@ -103,6 +103,50 @@ int executar(char *args[], int background, int style) {
         return -1;
     }
 
+    int redirecionar_saida = 0;
+    int modo_append;
+    char *arquivo_saida = NULL;
+    int k =0;
+
+    while(args[k] != NULL){
+
+        if(strcmp( args[k], ">>") == 0){
+
+            redirecionar_saida = 1;
+            modo_append = 1;
+            arquivo_saida = args[k+1];
+            args[k] = NULL;
+            break;
+
+        }else if(strcmp(args[k], ">") == 0){
+
+            redirecionar_saida = 1;
+            modo_append = 0;
+            arquivo_saida = args[k+1];
+            args[k] = NULL;
+            break;
+
+        }
+        k++;
+    }
+
+    int redirecionar_entrada = 0;
+    char *arquivo_entrada = NULL;
+    int l = 0;
+
+    while(args[l] != NULL){
+
+        if(strcmp(args[l], "<") == 0){
+
+            redirecionar_entrada = 1;
+            arquivo_entrada = args[l+1];
+            args[l] = NULL;
+            break;
+
+        }
+        l++;
+    }
+
     pid_t pid = fork();
 
     if(pid < 0){
@@ -111,6 +155,46 @@ int executar(char *args[], int background, int style) {
         return -1;
 
     }else if(pid == 0){
+
+        if(redirecionar_saida == 1 && arquivo_saida != NULL){
+
+            FILE *arquivo;
+            if(modo_append == 1){
+
+                arquivo = fopen(arquivo_saida, "a");
+
+            }else{
+
+                arquivo = fopen(arquivo_saida, "w");
+
+            }
+            if(arquivo == NULL){
+
+                printf("ERRO AO CRIAR O ARQUIVO %s \n", arquivo_saida);
+                exit(1);
+
+            }
+
+            int fd = fileno(arquivo);
+            dup2(fd, STDOUT_FILENO);
+            fclose(arquivo);
+
+        }
+
+        if(redirecionar_entrada == 1 && arquivo_entrada != NULL){
+
+            FILE *arquivo_in = fopen(arquivo_entrada, "r");
+            if(arquivo_in == NULL){
+
+                printf("ERRO AO CRIAR O ARQUIVO %s \n", arquivo_entrada);
+                exit(1);
+            }
+            int fd_in = fileno(arquivo_in);
+            dup2(fd_in, STDIN_FILENO);
+            fclose(arquivo_in);
+        }
+
+
 
         if(execvp(args[0], args) == -1){
 
