@@ -45,13 +45,14 @@ O código foi modulado em três pilares principais para garantir legibilidade e 
 ## Como Compilar e Rodar
 
 **1. Compilando o projeto:**
-2. 
+
 Na pasta raiz do projeto, execute:
 ```bash
 make clean
 make
 ```
 **2.1 No modo interativo:**
+
 ./shell_brabo
 
 **2.2 No modo Batch**
