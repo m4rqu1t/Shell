@@ -14,6 +14,13 @@ int main(int argc, char **argv) {
     FILE *entrada = stdin;
     int lendo_arq = 0;
 
+    if(argc >2){
+
+        printf("SO PODE PASSAR UM ARQUIVO POR VEZ!\n");
+        return 1;
+
+    }
+
     if(argc > 1){
 
         entrada = fopen(argv[1], "r");
